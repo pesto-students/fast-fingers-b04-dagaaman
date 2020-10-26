@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 function App() {
   return (
     <Router>
-      <div>
+      <div className="main-body">
         <Switch>
           <Route path="/play">
             <Player />
