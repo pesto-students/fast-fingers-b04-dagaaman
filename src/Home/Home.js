@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Home.css';
 import { Constants, DIFFCULTY_LEVEL, ROUTES_ENUMS }from '../constants.ts';
 import { Redirect } from "react-router-dom";
+import SessionAssistant from '../Service/SessionAssistance';
+import CommonUtility from '../Service/CommonUtility';
 
 export default class Home extends Component {
   constructor(props) {
@@ -61,7 +63,8 @@ export default class Home extends Component {
     }
 
     // TO DO : session related
-
+    CommonUtility.setCurrentUser(this.state.username, this.state.diffLevel);
+    
     this.setState(state => ({
       redirect: ROUTES_ENUMS.PLAY
     }));

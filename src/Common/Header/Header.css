@@ -1,0 +1,21 @@
+.header-container {
+  display: flex;
+}
+
+.header-container .header-details {
+  flex: 1;
+  font-size: 44px;
+}
+
+.header-container .score-details{
+  text-align: right;
+}
+
+.header-container .user-details {
+  text-transform: uppercase;
+}
+
+.header-container .score-details .game-header{
+  font-size: 56px;
+  font-weight: 700;
+}

@@ -1,0 +1,10 @@
+.footer-container {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 48px;
+}
+
+.footer-container .stop-game {
+  display: flex;
+  align-items: center;
+}
