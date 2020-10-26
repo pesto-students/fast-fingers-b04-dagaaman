@@ -31,6 +31,22 @@ body {
 }
 
 
+@font-face {
+  font-family: 'breamcatcher';
+  src: local('breamcatcher'), url(/static/font/breamcatcher.ttf) format('opentype');
+}
+
+@font-face {
+  font-family: 'lasercorpsgrad';
+  src: local('lasercorpsgrad'), url(/static/font/lasercorpsgrad.ttf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: local('Gotham'), url(/static/font/Gotham\ Book\ Regular.otf) format('opentype');
+}
+
+
 .App-Input {
   outline: none;  
   height: 90px;
