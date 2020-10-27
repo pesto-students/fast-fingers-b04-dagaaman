@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Header.css';
-import { Constants, ROUTES_ENUMS, DIFFCULTY_LEVEL } from '../../constants';
+import { Constants, ROUTES_ENUMS, DIFFCULTY_LEVEL, MODE } from '../../constants';
 import { Redirect } from "react-router-dom";
 import CommonUtility from '../../Service/CommonUtility';
 
@@ -32,7 +32,6 @@ export default class Header extends Component {
       // this.setState(state => ({
       //   redirect: ROUTES_ENUMS.DEFAULT
       // }));
-      console.log('Redirected');
       return;
     }
     user = this.setLevel(user);
@@ -75,7 +74,7 @@ export default class Header extends Component {
         </div>
         <div className="score-details header-details">
           <div className="game-header">Fast Fingers</div>
-          <div className={`current-score ${(this.state.currentState) ? "" : "hide"}`}>Score: 0:30</div>
+          <div className={`current-score ${(this.state.mode === MODE.PLAYING) ? "" : "hide"}`}>Score: 0:30</div>
         </div>
       </div>
     );

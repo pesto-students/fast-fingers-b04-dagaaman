@@ -25,6 +25,8 @@
   max-width: 350px;
   width: 100%;
 }
+
+
 .game-wrapper {
   display: flex;
   align-items: center;
@@ -46,6 +48,10 @@
   letter-spacing: normal;
   text-align: left;
   color: #ffffff;
+}
+
+.game-wrapper .play-container .word{
+  text-transform: uppercase;
 }
 
 .game-wrapper .play-container .wrong{

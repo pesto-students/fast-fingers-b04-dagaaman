@@ -3,7 +3,7 @@ import './Player.css';
 import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import ScoreBoard from '../Common/ScoreBoard/ScoreBoard';
-import { Constants, MODE, TIMER, ROUTES_ENUMS } from '../constants';
+import { Constants, MODE, TIMER, ROUTES_ENUMS, KEYWORDS } from '../constants';
 import CommonUtility from '../Service/CommonUtility';
 import { Redirect } from "react-router-dom";
 
@@ -11,8 +11,7 @@ import { Redirect } from "react-router-dom";
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    debugger;
-    this.state = { currentState: 1, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
@@ -20,7 +19,7 @@ export default class Player extends Component {
     this.updateWordCompletion = this.updateWordCompletion.bind(this);
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.playAgain = this.playAgain.bind(this);
-
+    this.beginScreen = this.beginScreen.bind(this);
     // setTimeout(() => {
     //   this.startTimer();
     // }, 2000);
@@ -28,6 +27,7 @@ export default class Player extends Component {
 
   componentDidMount() {
     CommonUtility.setCurrentGameMode(MODE.PLAYING, this.forceUpdateHandler());
+    this.beginScreen();
   }
 
   forceUpdateHandler(){
@@ -40,6 +40,35 @@ export default class Player extends Component {
     CommonUtility.setCurrentGameMode(MODE.PLAYING);
   }
 
+  getWord() {
+    const word = CommonUtility.getWord(this.state.currLevel);
+    this.setState(state => ({
+      currentWord: word
+    }));
+  }
+
+  async beginScreen() {
+    let curr = 0;
+    const interval = setInterval(() => {
+      if(curr < KEYWORDS.INTRODUCTION.length) {
+        this.setState(state => ({
+          instruction: KEYWORDS.INTRODUCTION[curr]
+        }));
+        curr++;
+      } else {
+        clearInterval(interval);
+        this.hideInstruction();
+        this.getWord();
+        document.getElementById('user-word-input').focus();
+      }
+    }, 1000);
+  }
+
+  async hideInstruction() {
+    await this.setState(state => ({
+      instruction: null
+    }));
+  }
 
   async updateUserWord(event) {
     let curr = event.target.value;
@@ -56,15 +85,20 @@ export default class Player extends Component {
   async updateWordCompletion() {
     const letterStatus = Array(1).fill('');
     const userWord = this.state.userWord;
-    if(userWord) {
-      [...userWord].forEach((curr, i) => {
-          if(curr === this.state.currentWord[i]) {
-            letterStatus[i] = 'correct';
-          } else {
-            letterStatus[i] = 'wrong';
+    if(this.state.userWord && this.state.userWord.length && this.state.userWord.toLowerCase() === this.state.currentWord.toLowerCase()) {
+      this.getWord();
+      document.getElementById('user-word-input').value = '';
+    } else {
+      if(userWord) {
+        [...userWord].forEach((curr, i) => {
+            if(curr.toLowerCase() === this.state.currentWord[i].toLowerCase()) {
+              letterStatus[i] = 'correct';
+            } else {
+              letterStatus[i] = 'wrong';
+            }
           }
-        }
-      )
+        )
+      }
     }
 
     await this.setState(state => ({
@@ -74,7 +108,6 @@ export default class Player extends Component {
 
   renderFooter() {
     const currMode = CommonUtility.getCurrentGameMode();
-    console.log(currMode);
     if(currMode) {
       return <Footer
       footerType={currMode}
@@ -184,9 +217,9 @@ export default class Player extends Component {
         {this.renderHeader()}
         <div className="player-box">
           <div className={`scoreboard-wrapper ${(CommonUtility.getCurrentGameMode() === MODE.PLAYING) ? "" : "hide"}`}> <ScoreBoard /> </div>
-          <div className="game-wrapper">
+          <div className={`game-wrapper ${(this.state.instruction) ? "hide" : "show"}`}>
           {CommonUtility.getCurrentGameMode() === MODE.PLAYING ? (
-              <div className="play-container">
+              <div className={`play-container ${(this.state.currentWord) ? "" : "hide"}`} >
               <div className="timer">
                 <div id="app">
                 <div className="base-timer">
@@ -211,15 +244,12 @@ export default class Player extends Component {
                 </div>
               </div>
               <div className="word">
-              {[...this.state.currentWord].map((curr, i) => {
-                // if(curr === this.getMaxResult()) {
-                //   return  <span key={i}>{curr}</span>
-                // }
-                return <span key={i} className={`${this.state.letterStatus[i]}`}>{curr}</span>
-              })}
+                {[...this.state.currentWord || ''].map((curr, i) => {
+                  return <span key={i} className={`${this.state.letterStatus[i]}`}>{curr}</span>
+                })}
               </div>
               <div className="input-word">
-              <input className="App-Input" onChange={(e) => { this.updateUserWord(e) }} tabIndex="0" type="text"/>
+              <input className="App-Input" id="user-word-input" onChange={(e) => { this.updateUserWord(e) }} tabIndex="0" type="text"/>
               </div>
             </div>
           ) : (
@@ -239,6 +269,15 @@ export default class Player extends Component {
             </div>
             )}            
           </div>
+          <div className={`game-wrapper ${(this.state.instruction) ? "" : "hide"}`}>
+            <div className="play-container">
+              <div className="word">
+                 <span>{this.state.instruction}</span>
+              </div>
+              
+            </div>        
+          </div>
+          
         </div>
         {this.renderFooter()}
       </div>
