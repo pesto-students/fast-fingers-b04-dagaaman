@@ -4,7 +4,8 @@ export const Constants = {
     DROPDOWN_PATH : '/static/img/dropdown.svg',
     PROFILE : '/static/img/profile.svg',
     GAME : '/static/img/gamepad.svg',
-    CROSS: '/static/img/cross.svg'
+    CROSS: '/static/img/cross.svg',
+    REPEAT: '/static/img/repeat.svg'
   };
 
 export const DIFFCULTY_LEVEL = {

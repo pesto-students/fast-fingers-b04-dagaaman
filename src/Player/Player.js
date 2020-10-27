@@ -3,12 +3,12 @@ import './Player.css';
 import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import ScoreBoard from '../Common/ScoreBoard/ScoreBoard';
-import { MODE, TIMER } from '../constants'
+import { Constants, MODE, TIMER } from '../constants'
 
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = {showDropdown: true, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { currentState: null, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
     this.formatTime = this.formatTime.bind(this);
@@ -48,20 +48,18 @@ export default class Player extends Component {
     await this.setState(state => ({
       letterStatus: letterStatus
     }));
-    
-    console.log(this.state.letterStatus);
   }
 
   renderFooter() {
-    if(this.state.showDropdown) {
+    if(this.state.currentState) {
       return <Footer
       footerType={MODE.PLAYING}
-      acc={this.state.showDropdown}
+      acc={this.state.currentState}
       />
-    } else if (!this.state.showDropdown) {
+    } else if (!this.state.currentState) {
       return <Footer
       footerType={MODE.SCORE_REPORT}
-      acc={this.state.showDropdown}
+      acc={this.state.currentState}
       />
     }
     return '';
@@ -148,11 +146,10 @@ export default class Player extends Component {
       <div className="player-container">
         <Header/>
         <div className="player-box">
-          <div className="scoreboard-wrapper"> <ScoreBoard /> </div>
+          <div className={`scoreboard-wrapper ${(this.state.currentState) ? "" : "hide"}`}> <ScoreBoard /> </div>
           <div className="game-wrapper">
-            {/* // if else here */}
-
-            <div className="play-container">
+          {this.state.currentState ? (
+              <div className="play-container">
               <div className="timer">
                 <div id="app">
                 <div className="base-timer">
@@ -188,10 +185,21 @@ export default class Player extends Component {
               <input className="App-Input" onChange={(e) => { this.updateUserWord(e) }} tabIndex="0" type="text"/>
               </div>
             </div>
+          ) : (
+            <div className="score-container">
+              <div className="game-name">
+                <span class="header">Score </span>
+                <span class="name">: Game 2</span>
+              </div>
+              <div className="score">9833:59</div>
+              <div className="high-score">New high score</div>
+              <div className="play-again">
+                <img src={Constants.REPEAT} alt="Play Again"/>
+                <span class="repeat">Play again</span>
+              </div>
+            </div>
+            )}            
           </div>
-
-          
-
         </div>
         {this.renderFooter()}
       </div>

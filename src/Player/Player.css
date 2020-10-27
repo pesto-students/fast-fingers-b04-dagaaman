@@ -17,6 +17,10 @@
   padding: 50px 0;
 }
 
+.player-container .player-box .hide{
+  display: none !important;
+}
+
 .player-container .player-box .scoreboard-wrapper{
   max-width: 350px;
   width: 100%;
@@ -58,6 +62,65 @@
   text-align: center;
 }
 
+.game-wrapper .play-container .input-word input {
+  font-size: 40px;
+  text-align: center;
+}
+
+.game-wrapper .score-container{
+  font-family: Gotham;
+  font-size: 70px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.game-wrapper .score-container .game-name .header {
+  text-transform: uppercase;
+}
+
+.game-wrapper .score-container .play-again .repeat{
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+  font-size: 54px;
+  font-weight: 500;
+  text-align: left;
+  color: #ff5155;
+}
+.game-wrapper .score-container .high-score{
+  text-transform: capitalize;
+  font-size: 53px;
+  padding-top: 25px;
+  /* display: none; */
+}
+
+.game-wrapper .score-container .high-score.show {
+  display: block;
+}
+
+.game-wrapper .score-container .play-again{
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 75px;
+}
+
+.game-wrapper .score-container .play-again img{
+  width: 53px;
+  height: 53px;
+  padding-right: 30px;
+}
+
+.game-wrapper .score-container .score{
+  font-size: 118px;
+  padding-top: 50px;
+}
 /* Timer CSS */
 .base-timer {
   position: relative;
