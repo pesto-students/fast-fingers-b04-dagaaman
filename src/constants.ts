@@ -27,3 +27,21 @@ export const MODE = {
     PLAYING: 1,
     SCORE_REPORT: 2
 }
+
+export const TIMER = {
+    TIME_LIMIT: 20,
+    FULL_DASH_ARRAY: 283,
+    COLOR_CODES: {
+        info: {
+          color: "red"
+        },
+        warning: {
+          color: "red",
+          threshold: 10
+        },
+        alert: {
+          color: "red",
+          threshold: 5
+        }
+      }
+}
