@@ -8,6 +8,7 @@ const CommonUtility = {
   currentGameMode: null,
   listener: [],
   dictonaryByLevel: null,
+  userGameLevel: null,
   setCurrentUser(name, level) {
     this.currentUser = {
       name: name,
@@ -26,6 +27,12 @@ const CommonUtility = {
     }
 
     return null;
+  },
+  setCurrentUserGameLevel(level) {
+    this.userGameLevel = level;
+  },
+  getCurrentUserGameLevel() {
+    return this.userGameLevel;
   },
   getCurrentGameMode() {
     return this.currentGameMode;
@@ -97,7 +104,7 @@ const CommonUtility = {
     if(currLevel >= DIFFCULTY_LEVEL.HARD) {
       level = DIFFCULTY_LEVEL.HARD;
     } else if(currLevel >= DIFFCULTY_LEVEL.MEDIUM) {
-      level = DIFFCULTY_LEVEL.HARD;
+      level = DIFFCULTY_LEVEL.MEDIUM;
     } else {
       level = DIFFCULTY_LEVEL.EASY;
     }

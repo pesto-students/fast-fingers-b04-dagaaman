@@ -3,7 +3,7 @@ import './Player.css';
 import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import ScoreBoard from '../Common/ScoreBoard/ScoreBoard';
-import { Constants, MODE, TIMER, ROUTES_ENUMS, KEYWORDS } from '../constants';
+import { Constants, MODE, TIMER, ROUTES_ENUMS, KEYWORDS, DIFFCULTY_LEVEL } from '../constants';
 import CommonUtility from '../Service/CommonUtility';
 import { Redirect } from "react-router-dom";
 
@@ -11,7 +11,7 @@ import { Redirect } from "react-router-dom";
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { user: CommonUtility.getCurrentUser(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
@@ -33,6 +33,9 @@ export default class Player extends Component {
   forceUpdateHandler(){
     return () => {
       this.forceUpdate();
+      if(!!this.state.currentWord) {
+        this.getWord();
+      }
     };
   }
 
@@ -41,10 +44,30 @@ export default class Player extends Component {
   }
 
   getWord() {
-    const word = CommonUtility.getWord(this.state.currLevel);
+    const word = CommonUtility.getWord(this.state.user.level);
     this.setState(state => ({
       currentWord: word
     }));
+  }
+
+  async updateUserLevel() {
+    const user = this.state.user;
+    user.level = user.level + DIFFCULTY_LEVEL.INCREASE_FACTOR;
+    await this.setState(state => ({
+      user: user
+    }));
+    console.log(user);
+    CommonUtility.setCurrentUserGameLevel(user.level);
+    CommonUtility.forceUpdate();    
+  }
+
+  onSuccessfulAttempt() {
+    this.getWord();
+    // increaseDiffculty
+    this.updateUserLevel();
+    // update timer
+    document.getElementById('user-word-input').value = '';
+    document.getElementById('user-word-input').focus();
   }
 
   async beginScreen() {
@@ -86,8 +109,7 @@ export default class Player extends Component {
     const letterStatus = Array(1).fill('');
     const userWord = this.state.userWord;
     if(this.state.userWord && this.state.userWord.length && this.state.userWord.toLowerCase() === this.state.currentWord.toLowerCase()) {
-      this.getWord();
-      document.getElementById('user-word-input').value = '';
+      this.onSuccessfulAttempt();
     } else {
       if(userWord) {
         [...userWord].forEach((curr, i) => {

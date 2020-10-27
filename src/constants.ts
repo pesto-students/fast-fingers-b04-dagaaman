@@ -10,8 +10,9 @@ export const Constants = {
 
 export const DIFFCULTY_LEVEL = {
     EASY: 1,
-    MEDIUM: 2,
-    HARD: 3
+    MEDIUM: 1.5,
+    HARD: 2,
+    INCREASE_FACTOR: 0.01
 };
 
 export const ROUTES_ENUMS = {
@@ -22,13 +23,13 @@ export const ROUTES_ENUMS = {
 
 export const SESSION = {
     CURRENT_USER: 'lastUser'
-}
+};
 
 export const MODE = {
     PLAYING: 1,
     SCORE_REPORT: 2,
     HOME: 3
-}
+};
 
 export const TIMER = {
     TIME_LIMIT: 20,
@@ -46,4 +47,13 @@ export const TIMER = {
           threshold: 5
         }
       }
+};
+
+export const KEYWORDS = {
+    INTRODUCTION: [
+        "Lets Begin!",
+        "Ready",
+        "Steady",
+        "GO!!"
+    ]
 }

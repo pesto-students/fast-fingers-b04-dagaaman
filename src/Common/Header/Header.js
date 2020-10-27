@@ -22,7 +22,18 @@ export default class Header extends Component {
       this.setState(state => ({
         mode: CommonUtility.getCurrentGameMode()
       }));
+      this.updateGameLevel();
     };
+  }
+
+  updateGameLevel() {
+    console.log('update game level');
+    let user = this.state.currUser;
+    user.level = CommonUtility.getCurrentUserGameLevel();
+    user = this.setLevel(user);
+    this.setState(state => ({
+      currUser: user
+    }));
   }
 
   validateUser(obj) {
@@ -41,7 +52,7 @@ export default class Header extends Component {
 
   setLevel(obj) {
     if(obj && !!obj.name && !!obj.level) {
-      switch(obj.level) {
+      switch(CommonUtility.normalizeLevel(obj.level)) {
         case DIFFCULTY_LEVEL.EASY: obj.levelVal = "EASY";
           break;
         case DIFFCULTY_LEVEL.MEDIUM: obj.levelVal = "MEDIUM";
