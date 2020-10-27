@@ -5,7 +5,7 @@ import { Constants } from '../../constants'
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {showDropdown: false, diffLevel: 0, username: null, redirect: null};
+    this.state = {mode: props.headerType};
   }
 
 
@@ -24,7 +24,7 @@ export default class Header extends Component {
         </div>
         <div className="score-details header-details">
           <div className="game-header">Fast Fingers</div>
-          <div className="game-current-score">Score: 0:30</div>
+          <div className={`current-score ${(this.state.currentState) ? "" : "hide"}`}>Score: 0:30</div>
         </div>
       </div>
     );

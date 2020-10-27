@@ -23,3 +23,7 @@
   font-size: 56px;
   font-weight: 700;
 }
+
+.header-container .score-details .hide{
+  display: none !important;
+}

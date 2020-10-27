@@ -10,6 +10,7 @@ export default class Player extends Component {
     super(props);
     this.state = { currentState: null, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
     this.formatTime = this.formatTime.bind(this);
     this.updateWordCompletion = this.updateWordCompletion.bind(this);
@@ -60,6 +61,19 @@ export default class Player extends Component {
       return <Footer
       footerType={MODE.SCORE_REPORT}
       acc={this.state.currentState}
+      />
+    }
+    return '';
+  }
+
+  renderHeader() {
+    if(this.state.currentState) {
+      return <Header
+      footerType={MODE.PLAYING}
+      />
+    } else if (!this.state.currentState) {
+      return <Header
+      footerType={MODE.SCORE_REPORT}
       />
     }
     return '';
@@ -144,7 +158,7 @@ export default class Player extends Component {
   render() {
     return (
       <div className="player-container">
-        <Header/>
+        {this.renderHeader()}
         <div className="player-box">
           <div className={`scoreboard-wrapper ${(this.state.currentState) ? "" : "hide"}`}> <ScoreBoard /> </div>
           <div className="game-wrapper">
