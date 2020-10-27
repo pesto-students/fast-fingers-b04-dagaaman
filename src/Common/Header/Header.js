@@ -9,7 +9,20 @@ export default class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {mode: props.headerType, redirect: null, currUser: {}};
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.validateUser(this.state);
+  }
+
+  componentDidMount() {
+    CommonUtility.addListner(this.forceUpdateHandler());
+  }
+
+  forceUpdateHandler(){
+    return () => {
+      this.setState(state => ({
+        mode: CommonUtility.getCurrentGameMode()
+      }));
+    };
   }
 
   validateUser(obj) {
@@ -19,6 +32,7 @@ export default class Header extends Component {
       // this.setState(state => ({
       //   redirect: ROUTES_ENUMS.DEFAULT
       // }));
+      console.log('Redirected');
       return;
     }
     user = this.setLevel(user);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
-import { Constants, DIFFCULTY_LEVEL, ROUTES_ENUMS }from '../constants.ts';
+import { Constants, DIFFCULTY_LEVEL, ROUTES_ENUMS, MODE }from '../constants.ts';
 import { Redirect } from "react-router-dom";
 // import SessionAssistant from '../Service/SessionAssistance';
 import CommonUtility from '../Service/CommonUtility';
@@ -15,6 +15,11 @@ export default class Home extends Component {
     this.renderLevelDesc = this.renderLevelDesc.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.startGame = this.startGame.bind(this);
+    CommonUtility.removeAllListner();
+  }
+
+  componentDidMount() {
+    CommonUtility.setCurrentGameMode(MODE.HoME);
   }
 
   toggleDropdown() {

@@ -3,20 +3,41 @@ import './Player.css';
 import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import ScoreBoard from '../Common/ScoreBoard/ScoreBoard';
-import { Constants, MODE, TIMER } from '../constants'
+import { Constants, MODE, TIMER, ROUTES_ENUMS } from '../constants';
+import CommonUtility from '../Service/CommonUtility';
+import { Redirect } from "react-router-dom";
+
 
 export default class Player extends Component {
   constructor(props) {
     super(props);
+    debugger;
     this.state = { currentState: 1, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
     this.formatTime = this.formatTime.bind(this);
     this.updateWordCompletion = this.updateWordCompletion.bind(this);
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+    this.playAgain = this.playAgain.bind(this);
+
     // setTimeout(() => {
     //   this.startTimer();
     // }, 2000);
+  }
+
+  componentDidMount() {
+    CommonUtility.setCurrentGameMode(MODE.PLAYING, this.forceUpdateHandler());
+  }
+
+  forceUpdateHandler(){
+    return () => {
+      this.forceUpdate();
+    };
+  }
+
+  playAgain() {
+    CommonUtility.setCurrentGameMode(MODE.PLAYING);
   }
 
 
@@ -33,7 +54,7 @@ export default class Player extends Component {
   }
 
   async updateWordCompletion() {
-    const letterStatus = Array(25).fill('');
+    const letterStatus = Array(1).fill('');
     const userWord = this.state.userWord;
     if(userWord) {
       [...userWord].forEach((curr, i) => {
@@ -52,30 +73,23 @@ export default class Player extends Component {
   }
 
   renderFooter() {
-    if(this.state.currentState) {
+    const currMode = CommonUtility.getCurrentGameMode();
+    console.log(currMode);
+    if(currMode) {
       return <Footer
-      footerType={MODE.PLAYING}
-      acc={this.state.currentState}
+      footerType={currMode}
       />
-    } else if (!this.state.currentState) {
-      return <Footer
-      footerType={MODE.SCORE_REPORT}
-      acc={this.state.currentState}
-      />
-    }
+    } 
     return '';
   }
 
   renderHeader() {
-    if(this.state.currentState) {
+    const currMode = CommonUtility.getCurrentGameMode();
+    if(currMode) {
       return <Header
-      footerType={MODE.PLAYING}
+      headerType={currMode}
       />
-    } else if (!this.state.currentState) {
-      return <Header
-      footerType={MODE.SCORE_REPORT}
-      />
-    }
+    } 
     return '';
   }
 
@@ -155,14 +169,23 @@ export default class Player extends Component {
       .setAttribute("stroke-dasharray", circleDasharray);
   }
 
+  initializeGame() {
+    this.setState(state => ({
+      gameInitialize: true
+    }));
+  }
+
   render() {
+    if(CommonUtility.getCurrentGameMode() === MODE.HOME) {
+      return <Redirect to={ROUTES_ENUMS.DEFAULT} />
+    }
     return (
       <div className="player-container">
         {this.renderHeader()}
         <div className="player-box">
-          <div className={`scoreboard-wrapper ${(this.state.currentState) ? "" : "hide"}`}> <ScoreBoard /> </div>
+          <div className={`scoreboard-wrapper ${(CommonUtility.getCurrentGameMode() === MODE.PLAYING) ? "" : "hide"}`}> <ScoreBoard /> </div>
           <div className="game-wrapper">
-          {this.state.currentState ? (
+          {CommonUtility.getCurrentGameMode() === MODE.PLAYING ? (
               <div className="play-container">
               <div className="timer">
                 <div id="app">
@@ -208,7 +231,7 @@ export default class Player extends Component {
               <div className="score">9833:59</div>
               <div className="high-score">New high score</div>
               <div className="play-again">
-                <div className="play-again-container App-Button">
+                <div className="play-again-container App-Button" onClick={this.playAgain}>
                   <img src={Constants.REPEAT} alt="Play Again"/>
                   <span className="repeat">Play again</span>
                 </div>

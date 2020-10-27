@@ -26,7 +26,8 @@ export const SESSION = {
 
 export const MODE = {
     PLAYING: 1,
-    SCORE_REPORT: 2
+    SCORE_REPORT: 2,
+    HOME: 3
 }
 
 export const TIMER = {

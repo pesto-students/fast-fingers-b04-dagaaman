@@ -1,9 +1,11 @@
 import SessionAssistant from './SessionAssistance';
-import {SESSION} from '../constants';
+import {SESSION, MODE} from '../constants';
 
 
 const CommonUtility = {
   currentUser: null,
+  currentGameMode: null,
+  listener: [],
   setCurrentUser(name, level) {
     this.currentUser = {
       name: name,
@@ -22,6 +24,37 @@ const CommonUtility = {
     }
 
     return null;
+  },
+  getCurrentGameMode() {
+    return this.currentGameMode;
+  },
+  setCurrentGameMode(gameMode, listner) {
+    console.log('gameMode upated', gameMode);
+    this.currentGameMode = gameMode;
+    if (listner) {
+      this.addListner(listner);
+    }
+    this.forceUpdate();
+  },
+  addListner(listner) {
+    this.listener.push(listner);
+  },
+  stopGame() {
+    // set user Data in session
+
+    //update mode
+    this.setCurrentGameMode(MODE.SCORE_REPORT);
+  },
+  quitGame(){
+    this.setCurrentGameMode(MODE.HOME);
+  },
+  forceUpdate() {
+    this.listener.forEach((curr) => {
+      curr();
+    })
+  },
+  removeAllListner() {
+    this.listener = [];
   }
 };
 
