@@ -8,7 +8,7 @@ import { Constants, MODE, TIMER } from '../constants'
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentState: null, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { currentState: 1, currentWord: 'WINDOW', userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
@@ -208,8 +208,10 @@ export default class Player extends Component {
               <div className="score">9833:59</div>
               <div className="high-score">New high score</div>
               <div className="play-again">
-                <img src={Constants.REPEAT} alt="Play Again"/>
-                <span className="repeat">Play again</span>
+                <div className="play-again-container App-Button">
+                  <img src={Constants.REPEAT} alt="Play Again"/>
+                  <span className="repeat">Play again</span>
+                </div>
               </div>
             </div>
             )}            

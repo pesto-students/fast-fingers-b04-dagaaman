@@ -108,7 +108,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 75px;
+  margin-top: 75px;
+}
+
+.game-wrapper .score-container .play-again-container {
+  padding-right: 10px;
+  padding-left: 10px;
+  box-sizing: border-box;
 }
 
 .game-wrapper .score-container .play-again img{

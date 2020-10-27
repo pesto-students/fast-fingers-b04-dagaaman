@@ -13,8 +13,10 @@ export default class Footer extends Component {
       return (
         <div className="footer-container">
           <div className="stop-game">
+            <div className="stop-game App-Button">
               <img src={Constants.CROSS} alt="Stop Game" />
               <span>Stop Game</span>
+            </div>
           </div>
         </div>
       );
@@ -22,8 +24,8 @@ export default class Footer extends Component {
 
     return (
       <div className="footer-container">
-        <div className="stop-game">
-            <span>Quit</span>
+        <div className="stop-game ">
+            <span className="App-Button">Quit</span>
         </div>
       </div>
     );

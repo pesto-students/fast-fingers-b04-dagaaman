@@ -105,7 +105,7 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-        <div className={`start-game ${(this.state.diffLevel && !!this.state.username) ? "start" : ""}`} onClick={this.startGame}>
+        <div className={`App-Button start-game ${(this.state.diffLevel && !!this.state.username) ? "start" : ""}`} onClick={this.startGame}>
           <img src={Constants.PLAY_BUTTON_PATH} alt="Start Game"/>
           <span>Start Game</span>
         </div>
