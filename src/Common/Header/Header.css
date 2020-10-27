@@ -13,9 +13,17 @@
 
 .header-container .user-details {
   text-transform: uppercase;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
 }
+
 
 .header-container .score-details .game-header{
   font-size: 56px;
   font-weight: 700;
+}
+
+.header-container .score-details .hide{
+  display: none !important;
 }

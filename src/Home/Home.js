@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
-import { Constants, DIFFCULTY_LEVEL, ROUTES_ENUMS }from '../constants.ts';
+import { Constants, DIFFCULTY_LEVEL, ROUTES_ENUMS, MODE }from '../constants.ts';
 import { Redirect } from "react-router-dom";
 // import SessionAssistant from '../Service/SessionAssistance';
 import CommonUtility from '../Service/CommonUtility';
@@ -15,6 +15,11 @@ export default class Home extends Component {
     this.renderLevelDesc = this.renderLevelDesc.bind(this);
     this.updateUsername = this.updateUsername.bind(this);
     this.startGame = this.startGame.bind(this);
+    CommonUtility.removeAllListner();
+  }
+
+  componentDidMount() {
+    CommonUtility.setCurrentGameMode(MODE.HoME);
   }
 
   toggleDropdown() {
@@ -99,13 +104,13 @@ export default class Home extends Component {
           </div>
           <div className={`App-Dropdown-options ${(this.state.showDropdown) ? "show" : ""}`}>
             <div className="App-Dropdown-options-content">
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(1) }}>Easy</span>
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(2) }}>Medium</span>
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(3) }}>Hard</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.EASY) }}>Easy</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.MEDIUM) }}>Medium</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.HARD) }}>Hard</span>
             </div>
           </div>
         </div>
-        <div className={`start-game ${(this.state.diffLevel && !!this.state.username) ? "start" : ""}`} onClick={this.startGame}>
+        <div className={`App-Button start-game ${(this.state.diffLevel && !!this.state.username) ? "start" : ""}`} onClick={this.startGame}>
           <img src={Constants.PLAY_BUTTON_PATH} alt="Start Game"/>
           <span>Start Game</span>
         </div>

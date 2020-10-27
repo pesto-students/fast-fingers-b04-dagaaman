@@ -3,12 +3,180 @@
   padding: 50px 60px;
 }
 
+.player-container .game-wrapper {
+  width: 100%;
+}
+
+.player-container .play-container {
+  width: 100%;
+  max-width: 550px;
+}
+
 .player-container .player-box {
   display: flex;
   padding: 50px 0;
 }
 
+.player-container .player-box .hide{
+  display: none !important;
+}
+
 .player-container .player-box .scoreboard-wrapper{
   max-width: 350px;
   width: 100%;
+}
+.game-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-wrapper .play-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+  font-family: Gotham;
+  font-size: 92px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+.game-wrapper .play-container .wrong{
+  color: #445298;
+}
+
+.game-wrapper .play-container .correct{
+  color: #54ba18;
+}
+
+.game-wrapper .play-container .input-word {
+  width: 100%;
+  font-size: 40px;
+  text-align: center;
+}
+
+.game-wrapper .play-container .input-word input {
+  font-size: 40px;
+  text-align: center;
+}
+
+.game-wrapper .score-container{
+  font-family: Gotham;
+  font-size: 70px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.game-wrapper .score-container .game-name .header {
+  text-transform: uppercase;
+}
+
+.game-wrapper .score-container .play-again .repeat{
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+  font-size: 54px;
+  font-weight: 500;
+  text-align: left;
+  color: #ff5155;
+}
+.game-wrapper .score-container .high-score{
+  text-transform: capitalize;
+  font-size: 53px;
+  padding-top: 25px;
+  /* display: none; */
+}
+
+.game-wrapper .score-container .high-score.show {
+  display: block;
+}
+
+.game-wrapper .score-container .play-again{
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 75px;
+}
+
+.game-wrapper .score-container .play-again-container {
+  padding-right: 10px;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.game-wrapper .score-container .play-again img{
+  width: 53px;
+  height: 53px;
+  padding-right: 30px;
+}
+
+.game-wrapper .score-container .score{
+  font-size: 118px;
+  padding-top: 50px;
+}
+/* Timer CSS */
+.base-timer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: #ff5155;
+}
+
+.base-timer__label {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
 }
