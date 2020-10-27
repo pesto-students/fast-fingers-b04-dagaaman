@@ -11,7 +11,7 @@ import { Redirect } from "react-router-dom";
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: CommonUtility.getCurrentUser(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { user: CommonUtility.getCurrentUser(), testData: CommonUtility.getTestData(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
@@ -39,15 +39,22 @@ export default class Player extends Component {
     };
   }
 
-  playAgain() {
+  async playAgain() {
+    await this.setState(state => ({
+      currentWord: null
+    }));
     CommonUtility.setCurrentGameMode(MODE.PLAYING);
+    this.updateTestData(0);
+    this.beginScreen();
   }
 
   getWord() {
-    const word = CommonUtility.getWord(this.state.user.level);
-    this.setState(state => ({
-      currentWord: word
-    }));
+    if(this.state.user && this.state.user.level) {
+      const word = CommonUtility.getWord(this.state.user.level);
+      this.setState(state => ({
+        currentWord: word
+      }));
+    }
   }
 
   async updateUserLevel() {
@@ -56,7 +63,6 @@ export default class Player extends Component {
     await this.setState(state => ({
       user: user
     }));
-    console.log(user);
     CommonUtility.setCurrentUserGameLevel(user.level);
     CommonUtility.forceUpdate();    
   }
@@ -65,9 +71,17 @@ export default class Player extends Component {
     this.getWord();
     // increaseDiffculty
     this.updateUserLevel();
+    this.updateTestData(1);
     // update timer
     document.getElementById('user-word-input').value = '';
     document.getElementById('user-word-input').focus();
+  }
+
+  updateTestData(success) {
+    const testData = CommonUtility.updateTestData(success, 20);
+    this.setState(state => ({
+      testData: testData
+    }));
   }
 
   async beginScreen() {
@@ -180,15 +194,7 @@ export default class Player extends Component {
   }
 
   formatTime() {
-    const time = this.state.timeLeft;
-    const minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-  
-    if (seconds < 10) {
-      seconds = `0${seconds}`;
-    }
-  
-    return `${minutes}:${seconds}`;
+    return CommonUtility.formatTime(this.state.timeLeft);
   }
 
   setRemainingPathColor(timeLeft) {
@@ -278,7 +284,7 @@ export default class Player extends Component {
             <div className="score-container">
               <div className="game-name">
                 <span className="header">Score </span>
-                <span className="name">: Game 2</span>
+                <span className="name">: Game {this.state.testData?.gameName}</span>
               </div>
               <div className="score">9833:59</div>
               <div className="high-score">New high score</div>

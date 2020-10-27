@@ -9,11 +9,14 @@ const CommonUtility = {
   listener: [],
   dictonaryByLevel: null,
   userGameLevel: null,
+  testData: null,
+  currScore: 0,
   setCurrentUser(name, level) {
     this.currentUser = {
       name: name,
       level: level
     };
+    this.userGameLevel = this.currentUser.level;
     SessionAssistant.setSession(SESSION.CURRENT_USER, this.currentUser);
   },
   getCurrentUser() {
@@ -34,6 +37,45 @@ const CommonUtility = {
   getCurrentUserGameLevel() {
     return this.userGameLevel;
   },
+  setCurrentGameData(data) {
+    this.testData = data;
+  },
+  getCurrentGameData() {
+    return this.testData;
+  },
+  populateUserGameData() {
+    if(this.currentUser && this.currentUser.name) {
+      let userData = SessionAssistant.getSession(this.currentUser.name);
+      if(!userData) {
+        userData = {results:[], user: this.currentUser};
+      }
+      return userData;
+    }
+    return null;
+
+  },
+  getTestData() {
+    if(this.currentUser) {
+      if(!this.testData) {
+        this.testData = {
+          score: 0,
+          words: 0,
+          gameName: this.populateUserGameData().results.length + 1
+        }
+      }
+  
+      return this.testData;
+    }
+    return null;
+  },
+  updateTestData(word) {
+    const testData = this.getTestData();
+    testData.words += word;
+    testData.score = this.currScore;
+    this.testData = testData;
+
+    return this.getTestData();
+  },
   getCurrentGameMode() {
     return this.currentGameMode;
   },
@@ -47,9 +89,15 @@ const CommonUtility = {
   addListner(listner) {
     this.listener.push(listner);
   },
-  stopGame() {
+  stopGame(score) {
     // set user Data in session
-
+    this.setCurrentUser(this.currentUser.name, this.userGameLevel || this.currentUser.level);
+    this.updateTestData(0, score)
+    const userData = this.populateUserGameData();
+    userData.results.push(this.getTestData());
+    SessionAssistant.setSession(this.currentUser.name, userData);
+    this.testData = null;
+    this.currScore = 0;
     //update mode
     this.setCurrentGameMode(MODE.SCORE_REPORT);
   },
@@ -110,6 +158,26 @@ const CommonUtility = {
     }
 
     return level;
+  },
+  formatTime(displayTime) {
+    if(!displayTime) {
+      displayTime = 0;
+    }
+    const time = displayTime;
+    let seconds = time % 60;
+  
+    if (seconds < 10) {
+      seconds = `0${seconds}`;
+    }
+
+    let milisec = time % 100;
+  
+    if (milisec < 10) {
+      milisec = `0${milisec}`;
+    }
+
+  
+    return `${seconds}:${milisec}`;
   }
 
 };
