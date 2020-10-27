@@ -21,7 +21,7 @@ export const ROUTES_ENUMS = {
 };
 
 export const SESSION = {
-    CURRENT: 'lastUser'
+    CURRENT_USER: 'lastUser'
 }
 
 export const MODE = {

@@ -1,4 +1,6 @@
 import SessionAssistant from './SessionAssistance';
+import {SESSION} from '../constants';
+
 
 const CommonUtility = {
   currentUser: null,
@@ -7,10 +9,19 @@ const CommonUtility = {
       name: name,
       level: level
     };
-    SessionAssistant.setSession('lastUser', this.currentUser);
+    SessionAssistant.setSession(SESSION.CURRENT_USER, this.currentUser);
   },
   getCurrentUser() {
-    return this.currentUser;
+    if(this.currentUser){
+      return this.currentUser;
+    }
+    const lastUser = SessionAssistant.getSession(SESSION.CURRENT_USER);
+    if (lastUser) {
+      this.currentUser = lastUser;
+      return this.currentUser;
+    }
+
+    return null;
   }
 };
 

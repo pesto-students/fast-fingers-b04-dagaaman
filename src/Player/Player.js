@@ -202,14 +202,14 @@ export default class Player extends Component {
           ) : (
             <div className="score-container">
               <div className="game-name">
-                <span class="header">Score </span>
-                <span class="name">: Game 2</span>
+                <span className="header">Score </span>
+                <span className="name">: Game 2</span>
               </div>
               <div className="score">9833:59</div>
               <div className="high-score">New high score</div>
               <div className="play-again">
                 <img src={Constants.REPEAT} alt="Play Again"/>
-                <span class="repeat">Play again</span>
+                <span className="repeat">Play again</span>
               </div>
             </div>
             )}            

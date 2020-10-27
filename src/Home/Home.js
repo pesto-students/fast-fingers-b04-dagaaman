@@ -99,9 +99,9 @@ export default class Home extends Component {
           </div>
           <div className={`App-Dropdown-options ${(this.state.showDropdown) ? "show" : ""}`}>
             <div className="App-Dropdown-options-content">
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(1) }}>Easy</span>
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(2) }}>Medium</span>
-              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(3) }}>Hard</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.EASY) }}>Easy</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.MEDIUM) }}>Medium</span>
+              <span tabIndex="0" className="App-Dropdown-Option" onClick={() => { this.setDifficultyLevel(DIFFCULTY_LEVEL.HARD) }}>Hard</span>
             </div>
           </div>
         </div>

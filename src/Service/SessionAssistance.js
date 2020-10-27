@@ -4,7 +4,7 @@ const SessionAssistant = {
           const sessionObj = sessionStorage.getItem(sessionKey);
           if(sessionObj) {
               const obj = JSON.parse(sessionObj);
-              return obj[sessionKey];
+              return obj;
           }
       } catch(exception) {
           console.log(`Some Error Occurred while getting session. More Details: ${exception}`);
