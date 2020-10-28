@@ -23,7 +23,7 @@ export default class ScoreBoard extends Component {
       }
       const results = [];
       userGameData.results.forEach((curr) => {
-        curr.score = CommonUtility.formatTime(curr.score);
+        curr.Timescore = CommonUtility.formatTime(curr.score);
         results.push(curr);
       });
       userGameData.results = results;
@@ -52,8 +52,6 @@ export default class ScoreBoard extends Component {
     return null;
   }
 
-
-
   render() {
     return (
       <div className="board-container">
@@ -62,9 +60,9 @@ export default class ScoreBoard extends Component {
         <div className="board-results">
           {this.state.games.map((curr, i) => {
             if(curr.score === this.getMaxResult()) {
-              return  <div className="current-result" key={i}> <div className="best">PERSONAL BEST</div> Game {i + 1} : {curr.score} </div>;
+              return  <div className="current-result" key={i}> <div className="best">PERSONAL BEST</div> Game {i + 1} : {curr.Timescore} </div>;
             }
-            return <div className="current-result" key={i}> Game {curr.gameName} : {curr.score || 0} </div>;
+            return <div className="current-result" key={i}> Game {curr.gameName} : {curr.Timescore || 0} </div>;
           })}
         </div>
         </div>

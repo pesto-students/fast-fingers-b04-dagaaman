@@ -102,7 +102,7 @@
   text-transform: capitalize;
   font-size: 53px;
   padding-top: 25px;
-  /* display: none; */
+  display: none;
 }
 
 .game-wrapper .score-container .high-score.show {
