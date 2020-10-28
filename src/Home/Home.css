@@ -1,0 +1,100 @@
+.home-container {
+  /* padding: 5%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  max-width: 662px;
+}
+
+.home-container .game-details .game-header{
+  text-align: center;
+  font-size: 64px;
+  margin-top: 24px;
+  font-family: "lasercorpsgrad",sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+
+.home-container .game-details .game-description{
+  position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-family: "Gotham",sans-serif;
+    margin-bottom: 64px;
+    align-items: center;
+}
+
+.home-container .game-details .game-description .line{
+  position: relative;
+  bottom: 50%;
+  border-bottom: 1px solid #ff5155;
+  flex: 1 1;
+}
+
+.home-container .game-details .game-description .text{
+  margin: 0 10px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.home-container .game-username { 
+  width: 100%;
+}
+
+.home-container .game-username input {
+  padding: 8%;
+}
+
+
+.home-container .game-diffculty {
+  text-transform: uppercase;
+}
+
+
+.home-container .start-game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 20px;
+  font-size: 48px;
+  pointer-events: none;
+}
+
+.home-container .start-game.start {
+  border: 1px solid #ff5155;
+  border-radius: 10px;
+  padding-right: 20px;
+  cursor: pointer;
+  pointer-events: all;
+}
+@media (max-width: 400px) {
+  .home-container .start-game {
+    font-size: 32px;
+  }
+}
+
+
+
+@media (max-width: 315px) {
+  .home-container .game-details .game-header{
+    font-size: 48px;
+  } 
+
+  .home-container .game-details .game-description .text{
+    margin-top: 20px;
+    text-align: center;
+  }
+  .home-container .start-game.start {
+    padding-right: 10px;
+  }
+  
+  .home-container .start-game img{
+    height: 60px;
+    width: 60px;
+  }
+}

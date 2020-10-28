@@ -1,0 +1,180 @@
+.header-container {
+  display: flex;
+}
+
+.header-container .header-details {
+  flex: 1;
+  font-size: 44px;
+}
+
+.header-container .score-details{
+  text-align: right;
+}
+
+.header-container .user-details {
+  text-transform: uppercase;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+.header-container .score-details .game-header{
+  font-size: 56px;
+  font-weight: 700;
+  font-family: "lasercorpsgrad",sans-serif;
+}
+
+.header-container .score-details .hide{
+  display: none !important;
+}
+.game-header-top {
+  display: none;
+  font-family: "lasercorpsgrad",sans-serif;
+}
+
+.word-len-1 span, .word-len-2 span, .word-len-3 span, .word-len-4 span {
+    font-size: 92px;
+}
+
+.word-len-5 span, .word-len-6 span, .word-len-7 span, .word-len-8 span {
+  font-size: 88px;
+}
+
+.word-len-9 span, .word-len-10 span, .word-len-11 span, .word-len-12 span{
+  font-size: 72px;
+}
+
+.word-len-13 span, .word-len-14 span, .word-len-15 span, .word-len-16 span, .word-len-17 span, .word-len-18 span, .word-len-19 span, .word-len-20 span {
+  font-size: 56px;
+}
+
+
+@media (max-width : 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .game-header-top {
+    display: block;
+    font-size: 56px;
+    font-weight: 700;
+    padding-bottom: 50px;
+    text-align: center;
+  }
+
+  .game-header-player {
+    display: none;
+  }
+
+  
+  .header-container .header-details{
+    font-size: 32px;
+  }
+
+  .player-name img{
+    width: 35px;
+    height: 35px;
+  }
+
+  .game-level img {
+    height: 20px;
+    width: 35px;
+  }
+
+  .word-len-1 span, .word-len-2 span, .word-len-3 span, .word-len-4 span {
+      font-size: 92px;
+    }
+
+    .word-len-5 span, .word-len-6 span, .word-len-7 span, .word-len-8 span {
+      font-size: 88px;
+    }
+
+    .word-len-9 span, .word-len-10 span, .word-len-11 span, .word-len-12 span, .word-len-13 span, .word-len-14 span, .word-len-15 span, .word-len-16 span, .word-len-17 span, .word-len-18 span, .word-len-19 span, .word-len-20 span {
+      font-size: 72px;
+    }
+
+}
+
+@media (max-width : 500px) {
+
+  .word-len-1 span, .word-len-2 span, .word-len-3 span, .word-len-4 span {
+    font-size: 80px;
+  }
+
+  .word-len-5 span, .word-len-6 span, .word-len-7 span, .word-len-8 span {
+    font-size: 72px;
+  }
+
+  .word-len-9 span, .word-len-10 span, .word-len-11 span, .word-len-12 span{
+    font-size: 48px;
+  }
+
+  .word-len-13 span, .word-len-14 span, .word-len-15 span, .word-len-16 span{
+    font-size: 40px;
+  }
+
+  .word-len-17 span, .word-len-18 span, .word-len-19 span, .word-len-20 span {
+    font-size: 32px;
+  }
+}
+
+@media (max-width : 400px) {
+  .header-container .header-details{
+    font-size: 24px;
+  }
+
+  .player-name img{
+    width: 30px;
+    height: 30px;
+  }
+
+  .game-level img {
+    height: 18px;
+    width: 30px;
+  }
+
+  
+  .word-len-1 span, .word-len-2 span, .word-len-3 span, .word-len-4 span {
+    font-size: 72px;
+  }
+
+  .word-len-5 span, .word-len-6 span, .word-len-7 span, .word-len-8 span {
+    font-size: 56px;
+  }
+
+  .word-len-9 span, .word-len-10 span, .word-len-11 span, .word-len-12 span{
+    font-size: 40px;
+  }
+
+  .word-len-13 span, .word-len-14 span, .word-len-15 span, .word-len-16 span{
+    font-size: 32px;
+  }
+
+  .word-len-17 span, .word-len-18 span, .word-len-19 span, .word-len-20 span {
+    font-size: 24px;
+  }
+}
+
+@media (max-width : 300px) {
+  .word-len-1 span, .word-len-2 span, .word-len-3 span, .word-len-4 span {
+    font-size: 64px;
+  }
+
+  .word-len-5 span, .word-len-6 span, .word-len-7 span, .word-len-8 span {
+    font-size: 48px;
+  }
+
+  .word-len-9 span, .word-len-10 span, .word-len-11 span, .word-len-12 span{
+    font-size: 40px;
+  }
+
+  .word-len-13 span, .word-len-14 span, .word-len-15 span, .word-len-16 span{
+    font-size: 28px;
+  }
+
+  .word-len-17 span, .word-len-18 span, .word-len-19 span, .word-len-20 span {
+    font-size: 20px;
+  }
+}

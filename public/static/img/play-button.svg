@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="84.231" height="89.41" viewBox="0 0 84.231 89.41">
+    <defs>
+        <filter id="dtfdryzuwa" width="84.231" height="89.41" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur result="blur" stdDeviation="8"/>
+            <feFlood flood-opacity=".161"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g filter="url(#dtfdryzuwa)">
+        <path fill="#ff5155" d="M34.324 17.364L5.855.533A3.86 3.86 0 0 0 0 3.874v33.652a3.879 3.879 0 0 0 5.855 3.34l28.469-16.822a3.878 3.878 0 0 0 0-6.68z" transform="translate(24 24)"/>
+    </g>
+</svg>

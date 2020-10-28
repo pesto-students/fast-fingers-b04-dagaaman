@@ -1,13 +1,209 @@
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root, body, html {
+  margin: 0;
+  width: 100%;
+}
+
+body {
+  background-image: url(/static/img/bg.svg);
+}
+
+#root {
+  background-image: linear-gradient(#000,rgba(1,30,36,.87));
+  display: flex;
+  padding: 50px 0;
+}
+
+.main-body {
+  /* background-image: linear-gradient(#000,rgba(1,30,36,.87)); */
+}
+
+body {
+  color: #ff5155;
+}
+
+
+@font-face {
+  font-family: 'breamcatcher';
+  src: local('breamcatcher'), url(/static/font/breamcatcher.ttf) format('opentype');
+}
+
+@font-face {
+  font-family: 'lasercorpsgrad';
+  src: local('lasercorpsgrad'), url(/static/font/lasercorpsgrad.ttf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: local('Gotham'), url(/static/font/Gotham\ Book\ Regular.otf) format('opentype');
+}
+
+
+.App-Button {
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+.App-Button:hover{
+  cursor: pointer;
+  border: 1px solid #ff5155;
+  box-shadow: 5px 5px 5px 0 #ff5155;
+  border-radius: 10px;
+}
+
+
+.App-Input {
+  outline: none;  
+  height: 90px;
+  border-radius: 15px;
+  box-shadow: 0 3px 16px 0 rgba(0,0,0,.8);
+  background-color: hsla(0,0%,100%,.59);
+  padding: 0 10px;
+  width: 100%;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-family: "breamcatcher",sans-serif;
+  font-size: 25px;
+  color: #032228;
+  border: 1px solid transparent;
+}
+
+
+/* dropdown css starts here */
+.App-Dropdown{
+  position: relative;
+  width:100%;
+  margin-top:10px;
+  margin-bottom: 50px;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-family: 'breamcatcher', sans-serif;
+}
+
+.App-Dropdown.wide-screen{
+  margin-top:20px;
+  margin-bottom: 100px;
+}
+
+
+.App-Dropdown:hover{ 
+  transition: all 0.3s;
+  border: 1px solid white;
+  box-shadow: 5px 5px 5px 0px rgb(255, 255, 255);
+}
+
+.App-Dropdown:focus {
+  transition: all 0.3s;
+  box-shadow: 5px 5px 5px 0px rgb(255, 255, 255);
+}
+
+
+.App-Dropdown .App-Dropdown-main{
+  color: #97a5a7;
+  font-size: 25px;
+  padding: 0px 8%;
+  border-radius: 10px;
+  border:1px solid #97a5a7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 90px;
+}
+
+
+.App-Dropdown.wide-screen .App-Dropdown-main{
+  font-size: 35px;
+  padding: 0px 29px;
+  height: 90px;
+
+}
+
+.App-Dropdown .App-Dropdown-options{
+  font-size: 20px;
+  position: absolute;
+  width: 100%;
+  /* visibility: hidden; */
+  display: none;
+}
+
+.App-Dropdown.wide-screen .App-Dropdown-options {
+  font-size: 25px;
+}
+
+
+
+.App-Dropdown .App-Dropdown-options.show {
+  /* visibility: visible; */
+  display: block;
+}
+
+
+.App-Dropdown .App-Dropdown-options-content{
+  background-color: rgba(255, 255, 255, 0.796);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0px 0px 10px 10px;
+  margin:10px;
+  padding:10px;
+  margin-top:0px;
+}
+
+.App-Dropdown .App-Dropdown-options span {
+  padding:8px;
+  cursor: pointer;
+  color: #032228;
+  border-radius: 10px;
+}
+
+.App-Dropdown .App-Dropdown-options span.selected {
+  color: white;
+  background-color: #053a4563;
+}
+
+
+.App-Dropdown .App-Dropdown-options span:hover{
+  transition: all 0.3s;
+  color: white;
+  background-color: #053a4563;
+}
+
+.App-Dropdown .App-Dropdown-options span:focus {
+  transition: all 0.3s;
+  color: white;
+  background-color: #053a4563;
+  outline:none;
+}
+
+/* dropdown css ends here */
+
+@media (min-height: 850px) {
+  #root, body, html {
+    height: 100%;
+  }
+
+  #root {
+     padding: 0;
+  }
+}
+

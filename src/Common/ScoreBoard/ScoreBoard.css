@@ -1,0 +1,45 @@
+.board-container .board-box {
+  height: 550px;
+  border-radius: 15px;
+  border: solid 3px #ff5155;
+}
+
+
+.board-container .board-box .board-header {
+  padding: 32px 0;
+  text-align: center;
+  font-family: Gotham;
+  font-size: 30px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+}
+
+.board-container .board-box .board-results {
+  padding-left: 32px;
+  font-family: Gotham;
+  font-size: 30px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+
+  overflow: auto;
+  height: 80%;
+}
+
+.board-container .board-box .board-results .current-result{
+  padding-bottom: 20px;
+}
+
+
+.board-container .board-box .board-results .current-result .best{
+  font-size: 11px;
+  line-height: 1.18;
+  color: #ff5155;
+}
