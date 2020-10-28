@@ -11,6 +11,7 @@ const CommonUtility = {
   userGameLevel: null,
   testData: null,
   currScore: 0,
+  timerInterval: null,
   setCurrentUser(name, level) {
     this.currentUser = {
       name: name,
@@ -36,6 +37,36 @@ const CommonUtility = {
   },
   getCurrentUserGameLevel() {
     return this.userGameLevel;
+  },
+  startTimer() {
+    const currTime = Date.now();
+    if(this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    this.timerInterval = setInterval(() => {
+      this.currScore = this.timeDiff(currTime);
+    }, 0.05);
+  },
+  timeDiff(offset) {
+    var now = Date.now(),
+      d   = now - offset;
+    offset = now;
+    return d;
+  },
+  stopTimer() {
+    if(this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    this.timerInterval = null;
+  },
+  resetTimer() {
+    if(this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    this.currScore = 0;
+  },
+  getCurrScore() {
+    return this.currScore;
   },
   setCurrentGameData(data) {
     this.testData = data;
@@ -80,6 +111,7 @@ const CommonUtility = {
     return this.currentGameMode;
   },
   setCurrentGameMode(gameMode, listner) {
+    debugger;
     this.currentGameMode = gameMode;
     if (listner) {
       this.addListner(listner);
@@ -89,10 +121,10 @@ const CommonUtility = {
   addListner(listner) {
     this.listener.push(listner);
   },
-  stopGame(score) {
+  stopGame() {
     // set user Data in session
     this.setCurrentUser(this.currentUser.name, this.userGameLevel || this.currentUser.level);
-    this.updateTestData(0, score)
+    this.updateTestData(0, this.currScore)
     const userData = this.populateUserGameData();
     userData.results.push(this.getTestData());
     SessionAssistant.setSession(this.currentUser.name, userData);
@@ -100,6 +132,7 @@ const CommonUtility = {
     this.currScore = 0;
     //update mode
     this.setCurrentGameMode(MODE.SCORE_REPORT);
+    this.forceUpdate();
   },
   quitGame(){
     this.setCurrentGameMode(MODE.HOME);
@@ -159,18 +192,16 @@ const CommonUtility = {
 
     return level;
   },
-  formatTime(displayTime) {
-    if(!displayTime) {
-      displayTime = 0;
+  formatTime(milisec) {
+    if(milisec < 0) {
+      milisec = 0;
     }
-    const time = displayTime;
-    let seconds = time % 60;
+    let seconds = Math.round(milisec / 1000);
+    milisec = Math.round(milisec % 100);
   
     if (seconds < 10) {
       seconds = `0${seconds}`;
     }
-
-    let milisec = time % 100;
   
     if (milisec < 10) {
       milisec = `0${milisec}`;
@@ -178,6 +209,10 @@ const CommonUtility = {
 
   
     return `${seconds}:${milisec}`;
+  },
+  getTimeLimit(word) {
+    const timerVal = (word.length)/(this.userGameLevel || this.currentUser.level);
+    return Math.ceil(Math.max(timerVal, 2)) * 1000;
   }
 
 };

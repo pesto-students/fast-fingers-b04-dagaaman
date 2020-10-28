@@ -3,6 +3,7 @@ import './Player.css';
 import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import ScoreBoard from '../Common/ScoreBoard/ScoreBoard';
+import Timer from '../Timer/Timer';
 import { Constants, MODE, TIMER, ROUTES_ENUMS, KEYWORDS, DIFFCULTY_LEVEL } from '../constants';
 import CommonUtility from '../Service/CommonUtility';
 import { Redirect } from "react-router-dom";
@@ -11,7 +12,9 @@ import { Redirect } from "react-router-dom";
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: CommonUtility.getCurrentUser(), testData: CommonUtility.getTestData(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [] };
+    this.state = { user: CommonUtility.getCurrentUser(), testData: CommonUtility.getTestData(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, actualTime: TIMER.TIME_LIMIT,  remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [],timerOn: false,
+    timerStart: 0,
+    timerTime: 0 };
     this.renderFooter = this.renderFooter.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.updateUserWord = this.updateUserWord.bind(this);
@@ -20,6 +23,9 @@ export default class Player extends Component {
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.playAgain = this.playAgain.bind(this);
     this.beginScreen = this.beginScreen.bind(this);
+    // this.updateTimerEvent = this.updateTimerEvent.bind(this);
+    this.lastScore = this.lastScore.bind(this);
+    
     // setTimeout(() => {
     //   this.startTimer();
     // }, 2000);
@@ -28,12 +34,21 @@ export default class Player extends Component {
   componentDidMount() {
     CommonUtility.setCurrentGameMode(MODE.PLAYING, this.forceUpdateHandler());
     this.beginScreen();
+    CommonUtility.resetTimer();
+  }
+
+  lastScore() {
+    const testData = CommonUtility.populateUserGameData();
+    if(!!testData && testData.results && testData.results.length) {
+      return CommonUtility.formatTime(testData.results[testData.results.length - 1].score);
+    }
+    return CommonUtility.formatTime();
   }
 
   forceUpdateHandler(){
     return () => {
       this.forceUpdate();
-      if(!!this.state.currentWord) {
+      if(!!this.state.currentWord && CommonUtility.getCurrentGameMode() === MODE.PLAYING) {
         this.getWord();
       }
     };
@@ -43,9 +58,24 @@ export default class Player extends Component {
     await this.setState(state => ({
       currentWord: null
     }));
+    CommonUtility.resetTimer();
     CommonUtility.setCurrentGameMode(MODE.PLAYING);
     this.updateTestData(0);
     this.beginScreen();
+  }
+
+  async setTimer(word) {
+    if(this.state.user && this.state.user.level) {
+      const time = CommonUtility.getTimeLimit(word);
+      await this.setState(state => ({
+        actualTime: time
+      }));
+      await this.setState(state => ({
+        timeLeft: time
+      }));
+      this.startTimer();
+
+    }
   }
 
   getWord() {
@@ -54,6 +84,7 @@ export default class Player extends Component {
       this.setState(state => ({
         currentWord: word
       }));
+      this.setTimer(word);
     }
   }
 
@@ -73,6 +104,7 @@ export default class Player extends Component {
     this.updateUserLevel();
     this.updateTestData(1);
     // update timer
+
     document.getElementById('user-word-input').value = '';
     document.getElementById('user-word-input').focus();
   }
@@ -95,8 +127,11 @@ export default class Player extends Component {
       } else {
         clearInterval(interval);
         this.hideInstruction();
+        CommonUtility.startTimer();
         this.getWord();
-        document.getElementById('user-word-input').focus();
+        if(document.getElementById('user-word-input')) {
+          document.getElementById('user-word-input').focus();
+        }
       }
     }, 1000);
   }
@@ -127,7 +162,7 @@ export default class Player extends Component {
     } else {
       if(userWord) {
         [...userWord].forEach((curr, i) => {
-            if(curr.toLowerCase() === this.state.currentWord[i].toLowerCase()) {
+            if(curr && this.state.currentWord && this.state.currentWord[i] && curr.toLowerCase() === this.state.currentWord[i].toLowerCase()) {
               letterStatus[i] = 'correct';
             } else {
               letterStatus[i] = 'wrong';
@@ -163,72 +198,97 @@ export default class Player extends Component {
   }
 
   onTimesUp() {
-    clearInterval(this.state.timerInterval);
+    this.stopTimer();
+    CommonUtility.stopGame();
   }
 
-  startTimer() {
-    const timerInterval = setInterval(() => {
-      const timePassed = this.state.timePassed + 1;
-      this.setState(state => ({
-        timePassed: timePassed
-      }));
-
-      const timeLeft = TIMER.TIME_LIMIT - timePassed;
-      this.setState(state => ({
-        timeLeft: timeLeft
-      }));
-
-      document.getElementById("base-timer-label").innerHTML = this.formatTime(timeLeft);
-
-      this.setState(state => ({
-        timerInterval: timerInterval
-      }));
-
-      this.setCircleDasharray();
-      this.setRemainingPathColor(timeLeft);
-  
-      if (timeLeft === 0) {
-        this.onTimesUp();
-      }
-    }, 1000);
-  }
-
-  formatTime() {
-    return CommonUtility.formatTime(this.state.timeLeft);
+  formatTime(time) {
+    return CommonUtility.formatTime(time);
   }
 
   setRemainingPathColor(timeLeft) {
     const { alert, warning, info } = TIMER.COLOR_CODES;
-    if (timeLeft <= alert.threshold) {
-      document
-        .getElementById("base-timer-path-remaining")
-        .classList.remove(warning.color);
-      document
-        .getElementById("base-timer-path-remaining")
-        .classList.add(alert.color);
-    } else if (timeLeft <= warning.threshold) {
-      document
-        .getElementById("base-timer-path-remaining")
-        .classList.remove(info.color);
-      document
-        .getElementById("base-timer-path-remaining")
-        .classList.add(warning.color);
+    if(document.getElementById("base-timer-path-remaining")) {
+      if (timeLeft <= alert.threshold ) {
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.remove(warning.color);
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.add(alert.color);
+      } else if (timeLeft <= warning.threshold) {
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.remove(info.color);
+        document
+          .getElementById("base-timer-path-remaining")
+          .classList.add(warning.color);
+      }
     }
   }
 
-  calculateTimeFraction() {
-    const rawTimeFraction = this.state.timeLeft / TIMER.TIME_LIMIT;
-    return rawTimeFraction - (1 / TIMER.TIME_LIMIT) * (1 - rawTimeFraction);
+  calculateTimeFraction(val) {
+    const rawTimeFraction = val / this.state.actualTime;
+    return Math.min(1, rawTimeFraction);
+    // console.log(rawTimeFraction, rawTimeFraction - (1 / this.state.timeLeft) * (1 - rawTimeFraction));
+    // console.log(Math.max(0, rawTimeFraction));
+    // return rawTimeFraction - (1 / this.state.timeLeft) * (1 - rawTimeFraction);
   }
 
-  setCircleDasharray() {
+  setCircleDasharray(val) {
     const circleDasharray = `${(
-      this.calculateTimeFraction() * TIMER.FULL_DASH_ARRAY
+      this.calculateTimeFraction(val) * TIMER.FULL_DASH_ARRAY
     ).toFixed(0)} 283`;
-    document
-      .getElementById("base-timer-path-remaining")
-      .setAttribute("stroke-dasharray", circleDasharray);
+    if(document.getElementById("base-timer-path-remaining")) {
+      document
+        .getElementById("base-timer-path-remaining")
+        .setAttribute("stroke-dasharray", circleDasharray);
+
+    }
   }
+
+  startTimer = () => {
+    this.resetTimer();
+    this.setState({
+      timerOn: true,
+      timerTime: this.state.timerTime,
+      timerStart: Date.now() - this.state.timerTime
+    });
+
+    let timer = setInterval(() => {
+      if(timer && this.state.timerOn) {
+        let currTimer = Date.now() - this.state.timerStart;
+        if(this.state.actualTime > currTimer) {
+          this.setState({
+            timerTime: Date.now() - this.state.timerStart
+          });
+        } else {
+          clearInterval(timer);
+          timer = undefined;
+          currTimer = this.state.actualTime;
+          this.onTimesUp();
+        }
+    
+        if(document.getElementById("base-timer-label")) {
+                document.getElementById("base-timer-label").innerHTML = this.formatTime(this.state.actualTime - currTimer);
+          }
+          
+        this.setCircleDasharray(this.state.actualTime - currTimer);
+        this.setRemainingPathColor(this.state.actualTime - currTimer);
+      }
+    }, 10);
+  };
+
+  stopTimer = () => {
+    this.setState({ timerOn: false });
+  };
+
+  resetTimer = () => {
+    this.setState({
+      timerStart: 0,
+      timerTime: 0
+    });
+  };
 
   initializeGame() {
     this.setState(state => ({
@@ -248,29 +308,7 @@ export default class Player extends Component {
           <div className={`game-wrapper ${(this.state.instruction) ? "hide" : "show"}`}>
           {CommonUtility.getCurrentGameMode() === MODE.PLAYING ? (
               <div className={`play-container ${(this.state.currentWord) ? "" : "hide"}`} >
-              <div className="timer">
-                <div id="app">
-                <div className="base-timer">
-                  <svg className="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <g className="base-timer__circle">
-                      <circle className="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-                      <path
-                        id="base-timer-path-remaining"
-                        strokeDasharray="283"
-                        className={`base-timer__path-remaining ${this.state.remainingPathColor}`}
-                        d="
-                          M 50, 50
-                          m -45, 0
-                          a 45,45 0 1,0 90,0
-                          a 45,45 0 1,0 -90,0
-                        "
-                      ></path>
-                    </g>
-                  </svg>
-                  <span id="base-timer-label" className="base-timer__label">{this.formatTime()}</span>
-                </div>
-                </div>
-              </div>
+                <Timer />
               <div className="word">
                 {[...this.state.currentWord || ''].map((curr, i) => {
                   return <span key={i} className={`${this.state.letterStatus[i]}`}>{curr}</span>
@@ -286,7 +324,7 @@ export default class Player extends Component {
                 <span className="header">Score </span>
                 <span className="name">: Game {this.state.testData?.gameName}</span>
               </div>
-              <div className="score">9833:59</div>
+              <div className="score">{this.lastScore()}</div>
               <div className="high-score">New high score</div>
               <div className="play-again">
                 <div className="play-again-container App-Button" onClick={this.playAgain}>

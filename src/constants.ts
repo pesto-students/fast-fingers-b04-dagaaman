@@ -32,7 +32,7 @@ export const MODE = {
 };
 
 export const TIMER = {
-    TIME_LIMIT: 20,
+    TIME_LIMIT: 5,
     FULL_DASH_ARRAY: 283,
     COLOR_CODES: {
         info: {

@@ -8,13 +8,22 @@ import CommonUtility from '../../Service/CommonUtility';
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {mode: props.headerType, redirect: null, currUser: {}};
+    this.state = {mode: props.headerType, currScore:'0', redirect: null, currUser: {}};
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.validateUser(this.state);
+    // CommonUtility.startTimer();
   }
 
   componentDidMount() {
     CommonUtility.addListner(this.forceUpdateHandler());
+    setInterval(() => {
+      if(CommonUtility.getCurrentGameMode()) {
+        const time = CommonUtility.formatTime(CommonUtility.getCurrScore());
+        this.setState(state => ({
+          currScore: time
+        }));
+      }
+    }, 100);
   }
 
   forceUpdateHandler(){
@@ -27,7 +36,6 @@ export default class Header extends Component {
   }
 
   updateGameLevel() {
-    console.log('update game level');
     let user = this.state.currUser;
     user.level = CommonUtility.getCurrentUserGameLevel();
     user = this.setLevel(user);
@@ -85,7 +93,7 @@ export default class Header extends Component {
         </div>
         <div className="score-details header-details">
           <div className="game-header">Fast Fingers</div>
-          <div className={`current-score ${(this.state.mode === MODE.PLAYING) ? "" : "hide"}`}>Score: 0:30</div>
+          <div className={`current-score ${(this.state.mode === MODE.PLAYING) ? "" : "hide"}`}>Score: {this.state.currScore}</div>
         </div>
       </div>
     );
