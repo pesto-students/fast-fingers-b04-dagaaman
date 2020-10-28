@@ -76,6 +76,9 @@ export default class Player extends Component {
     await this.setState(state => ({
       currentWord: null
     }));
+    await this.setState(state => ({
+      letterStatus: []
+    }));
     CommonUtility.resetTimer();
     CommonUtility.setCurrentGameMode(MODE.PLAYING);
     this.updateTestData(0);
