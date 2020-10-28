@@ -1,4 +1,5 @@
 .home-container {
+  /* padding: 5%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,6 +9,7 @@
 }
 
 .home-container .game-details .game-header{
+  text-align: center;
   font-size: 64px;
   margin-top: 24px;
   font-family: "lasercorpsgrad",sans-serif;
@@ -36,6 +38,7 @@
 .home-container .game-details .game-description .text{
   margin: 0 10px;
   font-size: 26px;
+  text-align: center;
 }
 
 .home-container .game-username { 
@@ -68,4 +71,30 @@
   padding-right: 20px;
   cursor: pointer;
   pointer-events: all;
+}
+@media (max-width: 400px) {
+  .home-container .start-game {
+    font-size: 32px;
+  }
+}
+
+
+
+@media (max-width: 315px) {
+  .home-container .game-details .game-header{
+    font-size: 48px;
+  } 
+
+  .home-container .game-details .game-description .text{
+    margin-top: 20px;
+    text-align: center;
+  }
+  .home-container .start-game.start {
+    padding-right: 10px;
+  }
+  
+  .home-container .start-game img{
+    height: 60px;
+    width: 60px;
+  }
 }
