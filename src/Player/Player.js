@@ -12,7 +12,7 @@ import { Redirect } from "react-router-dom";
 export default class Player extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: CommonUtility.getCurrentUser(), testData: CommonUtility.getTestData(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, actualTime: TIMER.TIME_LIMIT,  remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [],timerOn: false,
+    this.state = { user: CommonUtility.getCurrentUser(), testData: CommonUtility.getTestData(), currentState: 1, instruction: '', currentWord: null, userWord: null, timerInterval: null, timePassed: 0, timeLeft: TIMER.TIME_LIMIT, actualTime: TIMER.TIME_LIMIT,  remainingPathColor : TIMER.COLOR_CODES.info.color, letterStatus: [],timerOn: false, highScore: false,
     timerStart: 0,
     timerTime: 0 };
     this.renderFooter = this.renderFooter.bind(this);
@@ -37,11 +37,29 @@ export default class Player extends Component {
     CommonUtility.resetTimer();
   }
 
+  getMaxResult(testData) {
+    return Math.max.apply(Math, testData.results.map(function(o) { return o.score; }))
+  }
+
+  updateHighScore(isHighScore) {
+    if(this.state.highScore !== isHighScore) { 
+      this.setState(state => ({
+        highScore: isHighScore
+      }));
+    }
+  }
+
   lastScore() {
     const testData = CommonUtility.populateUserGameData();
+    let highScore = false;
     if(!!testData && testData.results && testData.results.length) {
+      if(testData.results[testData.results.length - 1].score === this.getMaxResult(testData)) {
+        highScore = true;
+        this.updateHighScore(highScore);
+      }
       return CommonUtility.formatTime(testData.results[testData.results.length - 1].score);
     }
+    this.updateHighScore(highScore);
     return CommonUtility.formatTime();
   }
 
@@ -325,7 +343,7 @@ export default class Player extends Component {
                 <span className="name">: Game {this.state.testData?.gameName}</span>
               </div>
               <div className="score">{this.lastScore()}</div>
-              <div className="high-score">New high score</div>
+              <div className={`high-score ${(this.state.highScore) ? "show" : ""}`}>New high score</div>
               <div className="play-again">
                 <div className="play-again-container App-Button" onClick={this.playAgain}>
                   <img src={Constants.REPEAT} alt="Play Again"/>

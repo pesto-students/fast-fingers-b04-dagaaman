@@ -111,7 +111,6 @@ const CommonUtility = {
     return this.currentGameMode;
   },
   setCurrentGameMode(gameMode, listner) {
-    debugger;
     this.currentGameMode = gameMode;
     if (listner) {
       this.addListner(listner);
