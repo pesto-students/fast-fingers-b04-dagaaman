@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import './ScoreBoard.css';
+import CommonUtility from '../../Service/CommonUtility';
 
 export default class ScoreBoard extends Component {
   constructor(props) {
     super(props);
-    this.state = {games: [{score: 1.14},{score: 1.14},{score: 1.14},{score: 1.14},{score: 1.14},{score: 1.15},{score: 1.15},{score: 1.15}]};
+    this.state = {games: []};
     this.renderResults = this.renderResults.bind(this);
     this.getMaxResult = this.getMaxResult.bind(this);
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+  }
+
+  componentDidMount() {
+    CommonUtility.addListner(this.forceUpdateHandler());
+  }
+
+  forceUpdateHandler(){
+    return () => {
+      let userGameData = CommonUtility.populateUserGameData();
+      if(!userGameData) {
+        userGameData = {results:[]};
+      }
+      const results = [];
+      userGameData.results.forEach((curr) => {
+        curr.score = CommonUtility.formatTime(curr.score);
+        results.push(curr);
+      });
+      userGameData.results = results;
+      this.setState(state => ({
+        games: userGameData.results
+      }));
+    };
   }
 
   getMaxResult() {
@@ -40,7 +64,7 @@ export default class ScoreBoard extends Component {
             if(curr.score === this.getMaxResult()) {
               return  <div className="current-result" key={i}> <div className="best">PERSONAL BEST</div> Game {i + 1} : {curr.score} </div>;
             }
-            return <div className="current-result" key={i}> Game {i + 1} : {curr.score} </div>;
+            return <div className="current-result" key={i}> Game {curr.gameName} : {curr.score || 0} </div>;
           })}
         </div>
         </div>

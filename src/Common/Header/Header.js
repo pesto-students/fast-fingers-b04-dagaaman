@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Header.css';
-import { Constants, ROUTES_ENUMS, DIFFCULTY_LEVEL } from '../../constants';
+import { Constants, ROUTES_ENUMS, DIFFCULTY_LEVEL, MODE } from '../../constants';
 import { Redirect } from "react-router-dom";
 import CommonUtility from '../../Service/CommonUtility';
 
@@ -8,13 +8,22 @@ import CommonUtility from '../../Service/CommonUtility';
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {mode: props.headerType, redirect: null, currUser: {}};
+    this.state = {mode: props.headerType, currScore:'0', redirect: null, currUser: {}};
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     this.validateUser(this.state);
+    // CommonUtility.startTimer();
   }
 
   componentDidMount() {
     CommonUtility.addListner(this.forceUpdateHandler());
+    setInterval(() => {
+      if(CommonUtility.getCurrentGameMode()) {
+        const time = CommonUtility.formatTime(CommonUtility.getCurrScore());
+        this.setState(state => ({
+          currScore: time
+        }));
+      }
+    }, 100);
   }
 
   forceUpdateHandler(){
@@ -22,7 +31,17 @@ export default class Header extends Component {
       this.setState(state => ({
         mode: CommonUtility.getCurrentGameMode()
       }));
+      this.updateGameLevel();
     };
+  }
+
+  updateGameLevel() {
+    let user = this.state.currUser;
+    user.level = CommonUtility.getCurrentUserGameLevel();
+    user = this.setLevel(user);
+    this.setState(state => ({
+      currUser: user
+    }));
   }
 
   validateUser(obj) {
@@ -32,7 +51,6 @@ export default class Header extends Component {
       // this.setState(state => ({
       //   redirect: ROUTES_ENUMS.DEFAULT
       // }));
-      console.log('Redirected');
       return;
     }
     user = this.setLevel(user);
@@ -42,7 +60,7 @@ export default class Header extends Component {
 
   setLevel(obj) {
     if(obj && !!obj.name && !!obj.level) {
-      switch(obj.level) {
+      switch(CommonUtility.normalizeLevel(obj.level)) {
         case DIFFCULTY_LEVEL.EASY: obj.levelVal = "EASY";
           break;
         case DIFFCULTY_LEVEL.MEDIUM: obj.levelVal = "MEDIUM";
@@ -75,7 +93,7 @@ export default class Header extends Component {
         </div>
         <div className="score-details header-details">
           <div className="game-header">Fast Fingers</div>
-          <div className={`current-score ${(this.state.currentState) ? "" : "hide"}`}>Score: 0:30</div>
+          <div className={`current-score ${(this.state.mode === MODE.PLAYING) ? "" : "hide"}`}>Score: {this.state.currScore}</div>
         </div>
       </div>
     );
