@@ -81,6 +81,7 @@ export default class Header extends Component {
     }
     return (
       <div className="header-container"> 
+          <div className="game-header-top">Fast Fingers</div>
         <div className="user-details header-details">
           <div className="player-name">
             <img src={Constants.PROFILE} alt="Player Icon" />
@@ -92,7 +93,7 @@ export default class Header extends Component {
           </div>
         </div>
         <div className="score-details header-details">
-          <div className="game-header">Fast Fingers</div>
+          <div className="game-header game-header-player">Fast Fingers</div>
           <div className={`current-score ${(this.state.mode === MODE.PLAYING) ? "" : "hide"}`}>Score: {this.state.currScore}</div>
         </div>
       </div>

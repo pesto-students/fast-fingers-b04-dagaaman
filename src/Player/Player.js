@@ -76,6 +76,9 @@ export default class Player extends Component {
     await this.setState(state => ({
       currentWord: null
     }));
+    await this.setState(state => ({
+      letterStatus: []
+    }));
     CommonUtility.resetTimer();
     CommonUtility.setCurrentGameMode(MODE.PLAYING);
     this.updateTestData(0);
@@ -327,7 +330,7 @@ export default class Player extends Component {
           {CommonUtility.getCurrentGameMode() === MODE.PLAYING ? (
               <div className={`play-container ${(this.state.currentWord) ? "" : "hide"}`} >
                 <Timer />
-              <div className="word">
+              <div className={`word ${(this.state.currentWord && (this.state.currentWord.length)) ? "word-len-" + (this.state.currentWord.length) : ""}`}>
                 {[...this.state.currentWord || ''].map((curr, i) => {
                   return <span key={i} className={`${this.state.letterStatus[i]}`}>{curr}</span>
                 })}
@@ -339,8 +342,8 @@ export default class Player extends Component {
           ) : (
             <div className="score-container">
               <div className="game-name">
-                <span className="header">Score </span>
-                <span className="name">: Game {this.state.testData?.gameName}</span>
+                <span className="header no-break">Score :</span>
+                <span className="name no-break"> Game {this.state.testData?.gameName}</span>
               </div>
               <div className="score">{this.lastScore()}</div>
               <div className={`high-score ${(this.state.highScore) ? "show" : ""}`}>New high score</div>

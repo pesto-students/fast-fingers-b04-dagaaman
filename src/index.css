@@ -17,17 +17,20 @@ code {
 #root, body, html {
   margin: 0;
   width: 100%;
-  height: 100%;
+}
+
+body {
+  background-image: url(/static/img/bg.svg);
 }
 
 #root {
+  background-image: linear-gradient(#000,rgba(1,30,36,.87));
   display: flex;
-  background-image: url(/static/img/bg.svg);
-  /* background-image: url('/static/img/bg.png'); */
+  padding: 50px 0;
 }
 
 .main-body {
-  background-image: linear-gradient(#000,rgba(1,30,36,.87));
+  /* background-image: linear-gradient(#000,rgba(1,30,36,.87)); */
 }
 
 body {
@@ -193,3 +196,14 @@ body {
 }
 
 /* dropdown css ends here */
+
+@media (min-height: 850px) {
+  #root, body, html {
+    height: 100%;
+  }
+
+  #root {
+     padding: 0;
+  }
+}
+
