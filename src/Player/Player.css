@@ -1,6 +1,7 @@
 .player-container {
   width: 100%;
   padding: 50px 60px;
+  max-width: 1150px;
 }
 
 .player-container .game-wrapper {
@@ -176,6 +177,10 @@
   color: #ff5155;
 }
 
+.no-break {
+  white-space: nowrap;
+}
+
 .base-timer__label {
   position: absolute;
   width: 300px;
@@ -186,3 +191,57 @@
   justify-content: center;
   font-size: 48px;
 }
+
+@media (min-width : 1024px) and (max-width : 1100px) {
+  .player-container .game-wrapper {
+    justify-content: flex-end;
+  }
+}
+
+
+@media (min-width : 768px) and (max-width : 1024px) {
+  .game-wrapper .play-container {
+    padding-left: 30px;
+  }
+}
+
+@media (max-width : 600px) {
+  .game-wrapper .score-container {
+    font-size: 48px !important;
+  }
+
+  .game-wrapper .score-container .score {
+    font-size: 80px !important;
+  }
+
+  .game-wrapper .score-container .high-score {
+    font-size: 40px !important;
+  }
+
+  .game-wrapper .score-container .play-again .repeat {
+    font-size: 40px !important;
+  }
+
+  .game-wrapper .score-container .play-again img {
+    height: 35px !important;
+    width: 60px !important;
+    padding-right: 10px !important;
+  }
+  
+}
+
+
+@media (max-width : 1024px) {
+
+  .player-container .player-box .scoreboard-wrapper{
+    align-self: center;
+    padding-top: 50px;
+  }
+  .player-container .player-box {
+    flex-direction: column-reverse;
+    justify-content: center;
+  }
+  
+}
+
+
